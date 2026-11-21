@@ -4,9 +4,10 @@ class NTM_BFG9000Spawner : NTM_ItemSpawner replaces BFG9000 {
 	}
 	
 	override void UpdateType(NTMAi e) {
-		if ((sv_ntm_r_custom && e.bMAYhem2019) || (sv_ntm_playerRandom == 1 && Random(0, 1))) {
+		if ((sv_ntm_r_custom && e.bMAYhem2019) || (sv_ntm_playerRandom == 1 && Random(0, 1)))
 			type = "NTM_Necronomicon";
-		}
+		else if ((sv_ntm_r_custom && e.bLegacyOfRust) || (sv_ntm_playerRandom == 1 && Random(0, 1)))
+			type = "ID24CalamityBlade";
 	}
 }
 

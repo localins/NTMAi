@@ -4,9 +4,10 @@ class NTM_PlasmaRifleSpawner : NTM_ItemSpawner replaces PlasmaRifle {
 	}
 	
 	override void UpdateType(NTMAi e) {
-		if ((sv_ntm_r_custom && e.bMAYhem2019) || (sv_ntm_playerRandom == 1 && Random(0, 1))) {
+		if ((sv_ntm_r_custom && e.bMAYhem2019) || (sv_ntm_playerRandom == 1 && Random(0, 1)))
 			type = "NTM_Flamethrower";
-		}
+		else if ((sv_ntm_r_custom && e.bLegacyOfRust) || (sv_ntm_playerRandom == 1 && Random(0, 1)))
+			type = "ID24Incinerator";
 	}
 }
 
@@ -18,8 +19,7 @@ class NTM_PlasmaRifle : PlasmaRifle {
 		Inventory.PickupMessage "Plasma Rifle!";
 	}
 	
-	States
-	{
+	States {
 		Ready:
 			NPLS A 1 A_WeaponReady;
 			Loop;
@@ -67,5 +67,27 @@ class NTM_PlasmaBall : PlasmaBall {
 		Death:
 			NPLB EEFGHIJ 2;
 			Stop;
+	}
+}
+
+class NTM_CellSpawner : NTM_ItemSpawner replaces Cell {
+	Default {
+		NTM_ItemSpawner.Type "Cell";
+	}
+	
+	override void UpdateType(NTMAi e) {
+		if (sv_ntm_r_custom && e.bLegacyOfRust)
+			type = "ID24Fuel";
+	}
+}
+
+class NTM_CellPackSpawner : NTM_ItemSpawner replaces CellPack {
+	Default {
+		NTM_ItemSpawner.Type "CellPack";
+	}
+	
+	override void UpdateType(NTMAi e) {
+		if (sv_ntm_r_custom && e.bLegacyOfRust)
+			type = "ID24FuelTank";
 	}
 }

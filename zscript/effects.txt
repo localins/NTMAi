@@ -24,6 +24,7 @@ class NTM_Gib : Actor {
 		+DontSplash
 		+ThruActors
 		+FloorClip
+		+MoveWithSector
 	}
 	
 	States {

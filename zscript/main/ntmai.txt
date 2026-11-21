@@ -1,25 +1,21 @@
 class NTMAi : EventHandler {
-	bool bADMORTEM, bAUGERZENITH, bD64D2, bEviternity, bMAYhem2019, bScythe2, bValiant;
+	bool bADMORTEM, bAUGERZENITH, bD64D2, bEviternity, bLegacyOfRust,
+	     bMAYhem2019, bScythe2, bValiant;
 	bool compNoBloodExplode;
 	
 	static void LumpPrintHash(string lumpName) {
 		int lump = -1;
-		
-		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1)
 			Console.PrintF("'"..lumpName.."' ("..lump..") hash is '"..(MD5.Hash(WADs.ReadLump(lump))).."'");
-		}
 	}
 	
 	static bool LumpHasHash(string lumpName, string hash) {
 		int lump = -1;
-		
-		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1) {
+		while ((lump = Wads.FindLump(lumpName, lump + 1)) != -1)
 			if (MD5.Hash(WADs.ReadLump(lump)) == hash) {
-				Console.PrintF("Found special lump '"..lumpName.."' ("..lump..", '"..(MD5.Hash(WADs.ReadLump(lump))).."')");
-				
+				Console.PrintF("Found special lump '"..lumpName.."' ("..lump..", '"..(MD5.Hash(WADs.ReadLump(lump))).."')");		
 				return true;
 			}
-		}
 		
 		return false;
 	}
@@ -95,6 +91,12 @@ class NTMAi : EventHandler {
 		   ✓ CommanderKeen = Astral Cacodemon
 		     BossBrain = Archangelus */
 		bEviternity = NTMAi.LumpHasHash("CWILV00", "6e8a89645bec3a49eb8995340a0ea59b");
+		
+		/* [Legacy of Rust]
+		   
+		   @ PlasmaRifle = Incinerator
+		   @ BFG9000 = Calamity Blade */
+		bLegacyOfRust = NTMAi.LumpHasHash("SKYDEFS", "94cb00fce800b2412c9bec1f2f8d29ad");
 		
 		/* [MAYhem 2019]
 		   
@@ -456,68 +458,58 @@ class NTMAi : EventHandler {
 			if (pmo.door != l) {
 				switch (l.args[3]) {
 					case 1:
-						if (UseKey(e, "RedCard", "NTM_Key_RedCard")) {
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard"))
 							lock = true;
-						}
 					break;
 					
 					case 2:
-						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard")) {
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard"))
 							lock = true;
-						}
 					break;
 					
 					case 3:
-						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard")) {
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard"))
 							lock = true;
-						}
 					break;
 					
 					case 4:
-						if (UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+						if (UseKey(e, "RedSkull", "NTM_Key_RedSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 5:
-						if (UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+						if (UseKey(e, "BlueSkull", "NTM_Key_BlueSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 6:
-						if (UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+						if (UseKey(e, "YellowSkull", "NTM_Key_YellowSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 100:
 						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")
 						    || UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")
-							|| UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+							|| UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 129:
 					case 132:
-						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull")) {
+						if (UseKey(e, "RedCard", "NTM_Key_RedCard") || UseKey(e, "RedSkull", "NTM_Key_RedSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 130:
 					case 133:
-						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull")) {
+						if (UseKey(e, "BlueCard", "NTM_Key_BlueCard") || UseKey(e, "BlueSkull", "NTM_Key_BlueSkull"))
 							lock = true;
-						}
 					break;
 					
 					case 131:
 					case 134:
-						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull")) {
+						if (UseKey(e, "YellowCard", "NTM_Key_YellowCard") || UseKey(e, "YellowSkull", "NTM_Key_YellowSkull"))
 							lock = true;
-						}
 					break;
 				}
 			}
@@ -543,13 +535,11 @@ class NTMAi : EventHandler {
 				pmo.A_GiveInventory(keyAnim);
 				
 				let keycard = NTM_Key(pmo.FindInventory(keyAnim));
-				
 				if (keycard) {
 					keycard.prevWeapon = prevWeapon.GetClassName();
 					p.pendingWeapon = keycard;
-				} else {
+				} else
 					return false;
-				}
 				
 				return true;
 			}
@@ -565,19 +555,16 @@ class NTMAi : EventHandler {
 	override void CheckReplacement(ReplaceEvent e) {
 		switch (e.replacee.GetClassName()) {
 			case 'Blood':
-				if (sv_ntm_gore) {
+				if (sv_ntm_gore)
 					e.replacement = "NTM_Blood";
-				}
 			break;
 			
 			case 'BurningBarrel':
 				if (sv_ntm_r_props) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_BurningColumn";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_BurningBarrel";
 				}
 			break;
@@ -585,17 +572,13 @@ class NTMAi : EventHandler {
 			case 'RedTorch':
 				if (sv_ntm_r_props) {
 					if (sv_ntm_r_custom) {
-						if (bADMORTEM) {
+						if (bADMORTEM)
 							break;
-						}
-						
 						if (bAUGERZENITH) {
 							e.replacement = "NTM_RedSpotlight";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_RedTorch";
 				}
 			break;
@@ -603,17 +586,13 @@ class NTMAi : EventHandler {
 			case 'GreenTorch':
 				if (sv_ntm_r_props) {
 					if (sv_ntm_r_custom) {
-						if (bADMORTEM) {
+						if (bADMORTEM)
 							break;
-						}
-						
 						if (bAUGERZENITH) {
 							e.replacement = "NTM_YellowSpotlight";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_GreenTorch";
 				}
 			break;
@@ -621,17 +600,13 @@ class NTMAi : EventHandler {
 			case 'BlueTorch':
 				if (sv_ntm_r_props) {
 					if (sv_ntm_r_custom) {
-						if (bADMORTEM) {
+						if (bADMORTEM)
 							break;
-						}
-						
 						if (bAUGERZENITH) {
 							e.replacement = "NTM_BlueSpotlight";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_BlueTorch";
 				}
 			break;
@@ -641,123 +616,100 @@ class NTMAi : EventHandler {
 					if (sv_ntm_r_custom) {
 						if (bAUGERZENITH) {
 							e.replacement = "NTM_Flames3";
-							
 							break;
 						}
-						
-						if (bADMORTEM || bEviternity) {
+						if (bADMORTEM || bEviternity)
 							break;
-						}
 					}
-					
 					e.replacement = "NTM_ShortRedTorch";
 				}
 			break;
 			
 			case 'ShortGreenTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity)))
 					e.replacement = "NTM_ShortGreenTorch";
-				}
 			break;
 			
 			case 'ShortBlueTorch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bEviternity)))
 					e.replacement = "NTM_ShortBlueTorch";
-				}
 			break;
 			
 			case 'TechLamp':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bMAYhem2019))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bADMORTEM && !bAUGERZENITH && !bMAYhem2019)))
 					e.replacement = "NTM_TechLamp";
-				}
 			break;
 			
 			case 'TechLamp2':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019)))
 					e.replacement = "NTM_TechLamp2";
-				}
 			break;
 			
 			case 'Column':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019))) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || (!bAUGERZENITH && !bMAYhem2019)))
 					e.replacement = "NTM_Column";
-				}
 			break;
 			
 			case 'SkullColumn':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_Pumpkin";
-				}
 			break;
 			
 			case 'GibbedMarine':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props)
 					e.replacement = "NTM_GibbedMarine";
-				}
 			break;
 			
 			case 'GibbedMarineExtra':
 				if (sv_ntm_r_custom && bD64D2) {
 					e.replacement = "NTM_NightmareCacodemon";
-					
 					break;
 				}
-				
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props)
 					e.replacement = "NTM_GibbedMarine2";
-				}
 			break;
 			
 			case 'DeadMarine':
-				if (sv_ntm_r_props) {
+				if (sv_ntm_r_props)
 					e.replacement = "NTM_DeadMarine";
-				}
 			break;
 			
 			case 'DeadZombieman':
-				if (sv_ntm_r_props && sv_ntm_r_zombieman) {
+				if (sv_ntm_r_props && sv_ntm_r_zombieman)
 					e.replacement = "NTM_DeadZombieman";
-				}
 			break;
 			
 			case 'DeadShotgunGuy':
-				if (sv_ntm_r_props && sv_ntm_r_shotgunGuy) {
+				if (sv_ntm_r_props && sv_ntm_r_shotgunGuy)
 					e.replacement = "NTM_DeadShotgunGuy";
-				}
 			break;
 			
 			case 'DeadDoomImp':
-				if (sv_ntm_r_props && sv_ntm_r_imp) {
+				if (sv_ntm_r_props && sv_ntm_r_imp)
 					e.replacement = "NTM_DeadImp";
-				}
 			break;
 			
 			case 'DeadDemon':
-				if (sv_ntm_r_props && sv_ntm_r_demon) {
+				if (sv_ntm_r_props && sv_ntm_r_demon)
 					e.replacement = "NTM_DeadDemon";
-				}
 			break;
 			
 			case 'DeadCacodemon':
-				if (sv_ntm_r_props && sv_ntm_r_cacodemon) {
+				if (sv_ntm_r_props && sv_ntm_r_cacodemon)
 					e.replacement = "NTM_DeadCacodemon";
-				}
 			break;
 			
 			case 'BloodyTwitch':
-				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bAUGERZENITH)) {
+				if (sv_ntm_r_props && (!sv_ntm_r_custom || !bAUGERZENITH))
 					e.replacement = "NTM_BloodyTwitch";
-				}
 			break;
 			
 			case 'Zombieman':
 				if (sv_ntm_r_zombieman) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_Zombie";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_Zombieman";
 				}
 			break;
@@ -766,10 +718,8 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_shotgunGuy) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_ShotgunCultist";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_ShotgunGuy";
 				}
 			break;
@@ -778,29 +728,23 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_heavyWeaponDude) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_TommyGunCultist";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_ChaingunGuy";
 				}
-				
 			break;
 			
 			case 'DoomImp':
-				if (sv_ntm_r_imp) {
+				if (sv_ntm_r_imp)
 					e.replacement = "NTM_Imp";
-				}
 			break;
 			
 			case 'LostSoul':
 				if (sv_ntm_r_lostSoul) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_LightningOrb";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_LostSoul";
 				}
 			break;
@@ -809,10 +753,8 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_demon) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_Skeleton2";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_Demon";
 				}
 			break;
@@ -821,28 +763,23 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_spectre) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_ShadowImp";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_Spectre";
 				}
 			break;
 			
 			case 'Cacodemon':
-				if (sv_ntm_r_cacodemon) {
+				if (sv_ntm_r_cacodemon)
 					e.replacement = "NTM_Cacodemon";
-				}
 			break;
 			
 			case 'HellKnight':
 				if (sv_ntm_r_hellKnight) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_Arachnorb";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_HellKnight";
 				}
 			break;
@@ -852,17 +789,13 @@ class NTMAi : EventHandler {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
 							e.replacement = "NTM_Annihilator";
-							
 							break;
 						}
-						
 						if (bMAYhem2019) {
 							e.replacement = "NTM_MotherBrain";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_BaronOfHell";
 				}
 			break;
@@ -871,10 +804,8 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_arachnotron) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_DeathCube";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_Arachnotron";
 				}
 			break;
@@ -883,30 +814,25 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_painElemental) {
 					if (sv_ntm_r_custom && bMAYhem2019) {
 						e.replacement = "NTM_Hothead";
-						
 						break;
 					}
-					
 					e.replacement = "NTM_PainElemental";
 				}
 			break;
 			
 			case 'Revenant':
-				if (sv_ntm_r_revenant) {
+				if (sv_ntm_r_revenant)
 					e.replacement = "NTM_Revenant";
-				}
 			break;
 			
 			case 'Fatso':
-				if (sv_ntm_r_mancubus) {
+				if (sv_ntm_r_mancubus)
 					e.replacement = "NTM_Mancubus";
-				}
 			break;
 			
 			case 'Archvile':
-				if (sv_ntm_r_archVile) {
+				if (sv_ntm_r_archVile)
 					e.replacement = "NTM_ArchVile";
-				}
 			break;
 			
 			case 'Cyberdemon':
@@ -914,17 +840,13 @@ class NTMAi : EventHandler {
 					if (sv_ntm_r_custom) {
 						if (bD64D2) {
 							e.replacement = "NTM_Cyberdemon2";
-							
 							break;
 						}
-						
 						if (bMAYhem2019) {
-							//e.replacement = "NTM_Minotaur";
-							
+							//e.replacement = "NTM_Minotaur";	
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_Cyberdemon";
 				}
 			break;
@@ -934,17 +856,13 @@ class NTMAi : EventHandler {
 					if (sv_ntm_r_custom) {
 						if (bD64D2) {
 							e.replacement = "NTM_MotherDemon";
-							
 							break;
 						}
-						
 						if (bMAYhem2019) {
 							//e.replacement = "NTM_Abbot";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_SpiderMastermind";
 				}
 			break;
@@ -954,23 +872,17 @@ class NTMAi : EventHandler {
 					if (sv_ntm_r_custom) {
 						if (bEviternity) {
 							e.replacement = "NTM_FormerCaptain";
-							
 							break;
 						}
-						
 						if (bMAYhem2019) {
 							e.replacement = "NTM_TommyGunCultist2";
-							
 							break;
 						}
-						
 						if (bScythe2) {
 							e.replacement = "NTM_EvilMarine";
-							
 							break;
 						}
 					}
-					
 					e.replacement = "NTM_German";
 				}
 			break;
@@ -979,25 +891,18 @@ class NTMAi : EventHandler {
 				if (sv_ntm_r_custom) {
 					if (bD64D2) {
 						e.replacement = "NTM_NightmareImp";
-						
 						break;
 					}
-					
 					if (bEviternity) {
 						e.replacement = "NTM_AstralCacodemon";
-						
 						break;
 					}
-					
 					if (bMAYhem2019) {
 						e.replacement = "NTM_ShadowHellhound";
-						
 						break;
 					}
-					
 					if (bScythe2) {
 						e.replacement = "NTM_Afrit";
-						
 						break;
 					}
 				}
@@ -1005,88 +910,74 @@ class NTMAi : EventHandler {
 			
 			// AD MORTEM
 			case 'DeH_Actor_150':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_PumpkinMarine";
-				}
 			break;
 			
 			case 'DeH_Actor_151':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_Gargoyle";
-				}
 			break;
 			
 			case 'DeH_Actor_152':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_Satyr";
-				}
 			break;
 			
 			case 'DeH_Actor_153':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_RocketWarrior";
-				}
 			break;
 			
 			case 'DeH_Actor_156':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_Skeleton";
-				}
 			break;
 			
 			case 'DeH_Actor_158':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_Gjenganger";
-				}
 			break;
 			
 			case 'DeH_Actor_209':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_Gargoyle2";
-				}
 			break;
 			
 			case 'DeH_Actor_231':
-				if (sv_ntm_r_custom && bADMORTEM) {
+				if (sv_ntm_r_custom && bADMORTEM)
 					e.replacement = "NTM_LittleMarine";
-				}
 			break;
 			
 			// AUGER;ZENITH
 			case 'AUGZENGlassBreakActor':
-				if (sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_GlassActor";
-				}
 			break;
 			
 			case 'ShortGreenColumn':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_RedBeacon";
-				}
 			break;
 			
 			case 'HeartColumn':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_PurpleBeacon";
-				}
 			break;
 			
 			case 'FloatingSkull':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_BlueBeacon";
-				}
 			break;
 			
 			case 'LiveStick':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_TrafficDrone";
-				}
 			break;
 			
 			case 'EvilEye':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bAUGERZENITH)
 					e.replacement = "NTM_TechFan";
-				}
 			break;
 			
 			// DOOM 64 for DOOM II
@@ -1094,86 +985,75 @@ class NTMAi : EventHandler {
 			// GROSS HACK: We have to directly check for a "Flames" actor since
 			//             using "DeadLostSoul" doesn't work!
 			case 'Flames':
-				if (sv_ntm_r_props && sv_ntm_r_custom && bD64D2) {
+				if (sv_ntm_r_props && sv_ntm_r_custom && bD64D2)
 					e.replacement = "NTM_Flames";
-				}
 			break;
 			
 			// Eviternity
 			
 			// GROSS HACK: Same for this thing...
 			case 'NightmareDemon':
-				if (sv_ntm_r_custom && bEviternity) {
-					
+				if (sv_ntm_r_custom && bEviternity)
 					e.replacement = "NTM_NightmareDemon";
-				}
 			break;
 			
 			// MAYhem2019
 			case 'HeadCandles':
-				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019)
 					e.replacement = "NTM_BonePile";
-				}
 			break;
 			
 			case 'Stalagtite':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_Satyr2";
-				}
 			break;
 			
 			case 'HangBNoBrain':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_Mummy";
-				}
 			break;
 			
 			case 'HangTNoBrain':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_BaronOfHell2";
-				}
 			break;
 			
 			case 'DeadLostSoul':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_Bat";
-				}
 			break;
 			
 			case 'HangTSkull':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_HellHound";
-				}
 			break;
 			
 			case 'MBFHelperDog':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_ChainsawManiac";
-				}
 			break;
 			
 			case 'HangTLookingUp':
 				if (sv_ntm_r_custom) {
 					if (bAUGERZENITH) {
 						e.replacement = "NTM_Joi";
+						break;
 					}
-					
 					if (bMAYhem2019) {
 						e.replacement = "NTM_TeslaCoil";
+						break;
 					}
 				}
 			break;
 			
 			case 'Meat2':
-				if (sv_ntm_r_custom && bMAYhem2019) {
+				if (sv_ntm_r_custom && bMAYhem2019)
 					e.replacement = "NTM_TeslaCoil2";
-				}
 			break;
 			
 			case 'Column':
-				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019) {
+				if (sv_ntm_r_custom && sv_ntm_r_props && bMAYhem2019)
 					e.replacement = "NTM_Flames2";
-				}
 			break;
 		}
 	}

@@ -131,8 +131,7 @@ class NTM_RocketAmmoSpawner : NTM_ItemSpawner replaces RocketAmmo {
 	}
 	
 	override void UpdateType(NTMAi e) {
-		if (sv_ntm_r_custom && (e.bADMORTEM || e.bMAYhem2019)) {
+		if (sv_ntm_r_custom && (e.bADMORTEM || e.bMAYhem2019))
 			type = "NTM_NapalmAmmo";
-		}
 	}
 }

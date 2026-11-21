@@ -34,8 +34,8 @@ class NTM_Player : DoomPlayer {
 		Player.WeaponSlot 3, "NTM_Shotgun", "NTM_SuperShotgun";
 		Player.WeaponSlot 4, "NTM_Chaingun", "NTM_TommyGun";
 		Player.WeaponSlot 5, "NTM_RocketLauncher", "NTM_NapalmLauncher";
-		Player.WeaponSlot 6, "NTM_Flamethrower", "NTM_PlasmaRifle";
-		Player.WeaponSlot 7, "NTM_Necronomicon", "NTM_BFG9000";
+		Player.WeaponSlot 6, "ID24Incinerator", "NTM_Flamethrower", "NTM_PlasmaRifle";
+		Player.WeaponSlot 7, "ID24CalamityBlade", "NTM_Necronomicon", "NTM_BFG9000";
 		Player.CrouchSprite "NPLC";
 		Player.ViewHeight 46;
 		Player.AttackZOffset 18;
@@ -253,7 +253,7 @@ class NTM_Player : DoomPlayer {
 		if (painTics > 0)
 			--painTics;
 		
-		hNewAngle = NTMAi.Lerp(hNewAngle, (vel.Length() > 0) * 22, 0.2);
+		hNewAngle = NTMAi.Lerp(hNewAngle, (vel.xy.Length() > 0) * 20, 0.2);
 		
 		super.Tick();
 	}
@@ -271,8 +271,7 @@ class NTM_Player : DoomPlayer {
 			return (0, 0);
 
 		double bobSpeed = weapon.bobSpeed * 128;
-		double rangeX = weapon.bobRangeX;
-		double rangeY = weapon.bobRangeY;
+		double rangeX = weapon.bobRangeX, rangeY = weapon.bobRangeY;
 		
 		// Add weapon panning like Duke3D
 		double shiftX = (Normalize180(viewAngle) * 0.0111111111111111) * 320;
@@ -280,8 +279,7 @@ class NTM_Player : DoomPlayer {
 
 		for (int i = 0; i < 2; i++) {
 			double angle = (bobSpeed * player.GetWBobSpeed() * 35 / TICRATE * (level.mapTime - 1 + i)) * (360. / 8192.);
-			double bobX = hNewAngle * rangeX * viewBob;
-			double bobY = player.bob * rangeY * viewBob;
+			double bobX = hNewAngle * rangeX * viewBob, bobY = player.bob * rangeY * viewBob;
 			r.x = Round(bobX * Cos(angle)) + shiftX;
 			r.y = Round(bobY * Abs(Sin(angle))) + shiftY;
 			
@@ -291,7 +289,7 @@ class NTM_Player : DoomPlayer {
 				p2 = r;
 		}
 		
-		return p1 * (1.0 - ticFrac) + p2 * ticFrac;
+		return p1 * (1. - ticFrac) + p2 * ticFrac;
 	}
 	
 	void A_ItBurnsItBurns() {
